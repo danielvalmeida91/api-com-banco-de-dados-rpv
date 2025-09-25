@@ -21,7 +21,11 @@ export async function list(req, res){
 export async function listById(req, res){
     try {
         const { id } = req.params
-        const query = await database('marcas').where('id', id);
+        const [query, info] = await database.raw(
+            `SELECT * FROM marcas WHERE id = ${id}`
+        );
+        
+        console.log(query)
 
         if(!query.length) {
             return res.status(200).send({
